@@ -1,0 +1,61 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { IsNull, Repository } from 'typeorm';
+import { PaginatedResponseDto } from '../../../../shared/dto/paginated-response.dto';
+import { Department } from '../../department/entities/department.entity';
+import { PaginationDto } from '../dto/pagination.dto';
+import { Process } from '../entities/process.entity';
+
+@Injectable()
+export class FindProcessesByDepartmentService {
+    constructor(
+        @InjectRepository(Process)
+        private readonly processRepository: Repository<Process>,
+        @InjectRepository(Department)
+        private readonly departmentRepository: Repository<Department>,
+    ) { }
+
+    async run(
+        departmentId: string,
+        paginationDto: PaginationDto,
+    ): Promise<PaginatedResponseDto<Process>> {
+        const department = await this.departmentRepository.findOne({
+            where: { id: departmentId },
+        });
+
+        if (!department) {
+            throw new NotFoundException(
+                `Department with ID ${departmentId} not found`,
+            );
+        }
+
+        const { page = 1, limit = 10 } = paginationDto;
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await this.processRepository.findAndCount({
+            where: {
+                departmentId,
+                parentId: IsNull(),
+            },
+            relations: ['department'],
+            order: { createdAt: 'DESC' },
+            skip,
+            take: limit,
+        });
+
+        const totalPages = Math.ceil(total / limit);
+
+        return {
+            data,
+            meta: {
+                page,
+                limit,
+                total,
+                totalPages,
+                hasPreviousPage: page > 1,
+                hasNextPage: page < totalPages,
+            },
+        };
+    }
+}
+

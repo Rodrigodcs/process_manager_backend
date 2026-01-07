@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: case-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: rodrigo
+      POSTGRES_PASSWORD: rodrigo
+      POSTGRES_DB: case1
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - case-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U rodrigo -d case1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: case-api
+    restart: always
+    ports:
+      - "8082:8082"
+    environment:
+      PORT: 8082
+      TYPEORM_CONNECTION: postgres
+      TYPEORM_HOST: postgres
+      TYPEORM_USERNAME: rodrigo
+      TYPEORM_PASSWORD: rodrigo
+      TYPEORM_DATABASE: case1
+      TYPEORM_PORT: 5432
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - case-network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  case-network:
+    driver: bridge
