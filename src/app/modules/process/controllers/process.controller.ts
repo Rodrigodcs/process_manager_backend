@@ -28,24 +28,21 @@ import { LinkDocumentsDto, LinkPeopleDto, LinkToolsDto } from '../dto/link-resou
 import { PaginationDto } from '../dto/pagination.dto';
 import { UpdateProcessDto } from '../dto/update-process.dto';
 import { Process } from '../entities/process.entity';
-import { AddDocumentToProcessService } from '../services/add-document-to-process.service';
-import { AddDocumentsToProcessService } from '../services/add-documents-to-process.service';
-import { AddPeopleToProcessService } from '../services/add-people-to-process.service';
-import { AddPersonToProcessService } from '../services/add-person-to-process.service';
-import { AddToolToProcessService } from '../services/add-tool-to-process.service';
-import { AddToolsToProcessService } from '../services/add-tools-to-process.service';
 import { CreateProcessService } from '../services/create-process.service';
 import { FindAllProcessService } from '../services/find-all-process.service';
 import { FindOneProcessService } from '../services/find-one-process.service';
 import { FindProcessChildrenService } from '../services/find-process-children.service';
 import { FindProcessesByDepartmentService } from '../services/find-processes-by-department.service';
-import { ListProcessDocumentsService } from '../services/list-process-documents.service';
-import { ListProcessPeopleService } from '../services/list-process-people.service';
-import { ListProcessToolsService } from '../services/list-process-tools.service';
-import { RemoveDocumentFromProcessService } from '../services/remove-document-from-process.service';
-import { RemovePersonFromProcessService } from '../services/remove-person-from-process.service';
+import { AddDocumentsToProcessService } from '../services/process-documents/add-documents-to-process.service';
+import { ListProcessDocumentsService } from '../services/process-documents/list-process-documents.service';
+import { RemoveDocumentFromProcessService } from '../services/process-documents/remove-document-from-process.service';
+import { AddPeopleToProcessService } from '../services/process-people/add-people-to-process.service';
+import { ListProcessPeopleService } from '../services/process-people/list-process-people.service';
+import { RemovePersonFromProcessService } from '../services/process-people/remove-person-from-process.service';
+import { AddToolsToProcessService } from '../services/process-tools/add-tools-to-process.service';
+import { ListProcessToolsService } from '../services/process-tools/list-process-tools.service';
+import { RemoveToolFromProcessService } from '../services/process-tools/remove-tool-from-process.service';
 import { RemoveProcessService } from '../services/remove-process.service';
-import { RemoveToolFromProcessService } from '../services/remove-tool-from-process.service';
 import { UpdateProcessService } from '../services/update-process.service';
 
 @ApiTags('processes')
@@ -59,15 +56,12 @@ export class ProcessController {
         private readonly findProcessesByDepartmentService: FindProcessesByDepartmentService,
         private readonly updateProcessService: UpdateProcessService,
         private readonly removeProcessService: RemoveProcessService,
-        private readonly addPersonToProcessService: AddPersonToProcessService,
         private readonly addPeopleToProcessService: AddPeopleToProcessService,
         private readonly removePersonFromProcessService: RemovePersonFromProcessService,
         private readonly listProcessPeopleService: ListProcessPeopleService,
-        private readonly addToolToProcessService: AddToolToProcessService,
         private readonly addToolsToProcessService: AddToolsToProcessService,
         private readonly removeToolFromProcessService: RemoveToolFromProcessService,
         private readonly listProcessToolsService: ListProcessToolsService,
-        private readonly addDocumentToProcessService: AddDocumentToProcessService,
         private readonly addDocumentsToProcessService: AddDocumentsToProcessService,
         private readonly removeDocumentFromProcessService: RemoveDocumentFromProcessService,
         private readonly listProcessDocumentsService: ListProcessDocumentsService,
@@ -186,20 +180,6 @@ export class ProcessController {
         return await this.addPeopleToProcessService.run(processId, linkPeopleDto.personIds);
     }
 
-    @Post(':processId/people/:personId')
-    @HttpCode(HttpStatus.CREATED)
-    @ApiOperation({ summary: 'Link a person to a process' })
-    @ApiParam({ name: 'processId', description: 'Process ID (UUID)' })
-    @ApiParam({ name: 'personId', description: 'Person ID (UUID)' })
-    @ApiCreatedResponse({ description: 'Person linked to process successfully' })
-    @ApiNotFoundResponse({ description: 'Process or Person not found' })
-    async addPersonToProcess(
-        @Param('processId') processId: string,
-        @Param('personId') personId: string,
-    ) {
-        return await this.addPersonToProcessService.run(processId, personId);
-    }
-
     @Delete(':processId/people/:personId')
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiOperation({ summary: 'Unlink a person from a process' })
@@ -248,20 +228,6 @@ export class ProcessController {
         return await this.addToolsToProcessService.run(processId, linkToolsDto.toolIds);
     }
 
-    @Post(':processId/tools/:toolId')
-    @HttpCode(HttpStatus.CREATED)
-    @ApiOperation({ summary: 'Link a tool to a process' })
-    @ApiParam({ name: 'processId', description: 'Process ID (UUID)' })
-    @ApiParam({ name: 'toolId', description: 'Tool ID (UUID)' })
-    @ApiCreatedResponse({ description: 'Tool linked to process successfully' })
-    @ApiNotFoundResponse({ description: 'Process or Tool not found' })
-    async addToolToProcess(
-        @Param('processId') processId: string,
-        @Param('toolId') toolId: string,
-    ) {
-        return await this.addToolToProcessService.run(processId, toolId);
-    }
-
     @Delete(':processId/tools/:toolId')
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiOperation({ summary: 'Unlink a tool from a process' })
@@ -308,20 +274,6 @@ export class ProcessController {
         @Body() linkDocumentsDto: LinkDocumentsDto,
     ) {
         return await this.addDocumentsToProcessService.run(processId, linkDocumentsDto.documentIds);
-    }
-
-    @Post(':processId/documents/:documentId')
-    @HttpCode(HttpStatus.CREATED)
-    @ApiOperation({ summary: 'Link a document to a process' })
-    @ApiParam({ name: 'processId', description: 'Process ID (UUID)' })
-    @ApiParam({ name: 'documentId', description: 'Document ID (UUID)' })
-    @ApiCreatedResponse({ description: 'Document linked to process successfully' })
-    @ApiNotFoundResponse({ description: 'Process or Document not found' })
-    async addDocumentToProcess(
-        @Param('processId') processId: string,
-        @Param('documentId') documentId: string,
-    ) {
-        return await this.addDocumentToProcessService.run(processId, documentId);
     }
 
     @Delete(':processId/documents/:documentId')

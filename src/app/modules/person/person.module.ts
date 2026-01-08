@@ -18,13 +18,7 @@ import { UpdatePersonService } from './services/update-person.service';
         UpdatePersonService,
         RemovePersonService,
     ],
-    exports: [
-        CreatePersonService,
-        FindAllPeopleService,
-        FindOnePersonService,
-        UpdatePersonService,
-        RemovePersonService,
-    ],
+    exports: [],
 })
 export class PersonModule { }
 

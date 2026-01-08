@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Tool } from '../../tool/entities/tool.entity';
-import { ProcessTool } from '../entities/process-tool';
-import { Process } from '../entities/process.entity';
+import { Tool } from '../../../tool/entities/tool.entity';
+import { ProcessTool } from '../../entities/process-tool';
+import { Process } from '../../entities/process.entity';
 
 @Injectable()
 export class AddToolsToProcessService {

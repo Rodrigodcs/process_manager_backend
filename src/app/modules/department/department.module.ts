@@ -18,13 +18,7 @@ import { UpdateDepartmentService } from './services/update-department.service';
         UpdateDepartmentService,
         RemoveDepartmentService,
     ],
-    exports: [
-        CreateDepartmentService,
-        FindAllDepartmentService,
-        FindOneDepartmentService,
-        UpdateDepartmentService,
-        RemoveDepartmentService,
-    ],
+    exports: [],
 })
 export class DepartmentModule { }
 

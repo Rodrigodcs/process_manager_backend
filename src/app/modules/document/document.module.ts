@@ -18,13 +18,7 @@ import { UpdateDocumentService } from './services/update-document.service';
         UpdateDocumentService,
         RemoveDocumentService,
     ],
-    exports: [
-        CreateDocumentService,
-        FindAllDocumentsService,
-        FindOneDocumentService,
-        UpdateDocumentService,
-        RemoveDocumentService,
-    ],
+    exports: [],
 })
 export class DocumentModule { }
 

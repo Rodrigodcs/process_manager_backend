@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Document } from '../../document/entities/document.entity';
-import { ProcessDocument } from '../entities/process-document';
-import { Process } from '../entities/process.entity';
+import { Document } from '../../../document/entities/document.entity';
+import { ProcessDocument } from '../../entities/process-document';
+import { Process } from '../../entities/process.entity';
 
 @Injectable()
 export class AddDocumentsToProcessService {

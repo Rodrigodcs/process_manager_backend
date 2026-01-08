@@ -18,13 +18,7 @@ import { UpdateToolService } from './services/update-tool.service';
         UpdateToolService,
         RemoveToolService,
     ],
-    exports: [
-        CreateToolService,
-        FindAllToolsService,
-        FindOneToolService,
-        UpdateToolService,
-        RemoveToolService,
-    ],
+    exports: [],
 })
 export class ToolModule { }
 
