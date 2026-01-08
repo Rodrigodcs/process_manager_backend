@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Get,
     HttpCode,
     HttpStatus,
     Post
@@ -13,9 +14,11 @@ import {
     ApiParam,
     ApiTags
 } from '@nestjs/swagger';
+import { CurrentUser } from 'src/app/decorators/current-user.decorator';
 import { User } from '../../user/entities/user.entity';
 import { SignInDto } from '../dto/sign-in.dto';
 import { SignUpDto } from '../dto/sign-up.dto';
+import { MeService } from '../services/me.service';
 import { SignInService } from '../services/sign-in.service';
 import { SignUpService } from '../services/sign-up.service';
 
@@ -25,6 +28,7 @@ export class AuthController {
     constructor(
         private readonly signUpService: SignUpService,
         private readonly signInService: SignInService,
+        private readonly meService: MeService,
     ) { }
 
     @Post('sign-up')
@@ -48,6 +52,16 @@ export class AuthController {
     @ApiNotFoundResponse({ description: 'User not found' })
     async signIn(@Body() signInDto: SignInDto) {
         return await this.signInService.run(signInDto);
+    }
+
+    @Get('me')
+    @ApiOperation({ summary: 'Get the current user' })
+    @ApiOkResponse({
+        description: 'User found',
+        type: User,
+    })
+    async me(@CurrentUser('id') id: string) {
+        return this.meService.run(id);
     }
 }
 
