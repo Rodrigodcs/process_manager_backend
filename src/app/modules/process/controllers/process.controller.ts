@@ -25,7 +25,6 @@ import { Person } from '../../person/entities/person.entity';
 import { Tool } from '../../tool/entities/tool.entity';
 import { CreateProcessDto } from '../dto/create-process.dto';
 import { LinkDocumentsDto, LinkPeopleDto, LinkToolsDto } from '../dto/link-resources.dto';
-import { PaginationDto } from '../dto/pagination.dto';
 import { UpdateProcessDto } from '../dto/update-process.dto';
 import { Process } from '../entities/process.entity';
 import { CreateProcessService } from '../services/create-process.service';
@@ -44,6 +43,7 @@ import { ListProcessToolsService } from '../services/process-tools/list-process-
 import { RemoveToolFromProcessService } from '../services/process-tools/remove-tool-from-process.service';
 import { RemoveProcessService } from '../services/remove-process.service';
 import { UpdateProcessService } from '../services/update-process.service';
+import { ListProcessesByDepartmentDto } from '../dto/list-processes-by-department.dto';
 
 @ApiTags('processes')
 @Controller('processes')
@@ -101,7 +101,7 @@ export class ProcessController {
     @ApiNotFoundResponse({ description: 'Department not found' })
     async findByDepartment(
         @Param('departmentId') departmentId: string,
-        @Query() paginationDto: PaginationDto,
+        @Query() paginationDto: ListProcessesByDepartmentDto,
     ): Promise<PaginatedResponseDto<Process>> {
         return await this.findProcessesByDepartmentService.run(
             departmentId,

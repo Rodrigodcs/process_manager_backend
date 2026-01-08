@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { PaginatedResponseDto } from '../../../../shared/dto/paginated-response.dto';
 import { Department } from '../../department/entities/department.entity';
-import { PaginationDto } from '../dto/pagination.dto';
+import { ListProcessesByDepartmentDto } from '../dto/list-processes-by-department.dto';
 import { Process } from '../entities/process.entity';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class FindProcessesByDepartmentService {
 
     async run(
         departmentId: string,
-        paginationDto: PaginationDto,
+        listProcessesByDepartmentDto: ListProcessesByDepartmentDto,
     ): Promise<PaginatedResponseDto<Process>> {
         const department = await this.departmentRepository.findOne({
             where: { id: departmentId },
@@ -29,7 +29,7 @@ export class FindProcessesByDepartmentService {
             );
         }
 
-        const { page = 1, limit = 10 } = paginationDto;
+        const { page = 1, limit = 10 } = listProcessesByDepartmentDto;
         const skip = (page - 1) * limit;
 
         const [data, total] = await this.processRepository.findAndCount({
