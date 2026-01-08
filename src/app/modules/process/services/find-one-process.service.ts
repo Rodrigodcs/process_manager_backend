@@ -13,14 +13,28 @@ export class FindOneProcessService {
     async run(id: string): Promise<Process> {
         const process = await this.processRepository.findOne({
             where: { id },
-            relations: ['department', 'parent', 'children'],
+            relations: [
+                'department',
+                'parent',
+                'children',
+                'tools',
+                'tools.tool',
+                'people',
+                'people.person',
+                'documents',
+                'documents.document',
+            ],
         });
 
         if (!process) {
             throw new NotFoundException(`Process with ID ${id} not found`);
         }
 
-        return process;
+        // Add childrenIds array
+        return {
+            ...process,
+            childrenIds: process.children?.map(child => child.id) || [],
+        } as any;
     }
 }
 

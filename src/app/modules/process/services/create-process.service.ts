@@ -38,7 +38,13 @@ export class CreateProcessService {
         }
 
         const process = this.processRepository.create(createProcessDto);
-        return await this.processRepository.save(process);
+        const savedProcess = await this.processRepository.save(process);
+
+        // Add empty childrenIds array for new process
+        return {
+            ...savedProcess,
+            childrenIds: [],
+        } as any;
     }
 }
 

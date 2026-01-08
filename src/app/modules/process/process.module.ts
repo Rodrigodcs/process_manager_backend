@@ -10,11 +10,15 @@ import { ProcessPerson } from './entities/process-person';
 import { ProcessTool } from './entities/process-tool';
 import { Process } from './entities/process.entity';
 import { AddDocumentToProcessService } from './services/add-document-to-process.service';
+import { AddDocumentsToProcessService } from './services/add-documents-to-process.service';
 import { AddPersonToProcessService } from './services/add-person-to-process.service';
+import { AddPeopleToProcessService } from './services/add-people-to-process.service';
 import { AddToolToProcessService } from './services/add-tool-to-process.service';
+import { AddToolsToProcessService } from './services/add-tools-to-process.service';
 import { CreateProcessService } from './services/create-process.service';
 import { FindAllProcessService } from './services/find-all-process.service';
 import { FindOneProcessService } from './services/find-one-process.service';
+import { FindProcessChildrenService } from './services/find-process-children.service';
 import { FindProcessesByDepartmentService } from './services/find-processes-by-department.service';
 import { ListProcessDocumentsService } from './services/list-process-documents.service';
 import { ListProcessPeopleService } from './services/list-process-people.service';
@@ -43,16 +47,20 @@ import { UpdateProcessService } from './services/update-process.service';
         CreateProcessService,
         FindAllProcessService,
         FindOneProcessService,
+        FindProcessChildrenService,
         FindProcessesByDepartmentService,
         UpdateProcessService,
         RemoveProcessService,
         AddPersonToProcessService,
+        AddPeopleToProcessService,
         RemovePersonFromProcessService,
         ListProcessPeopleService,
         AddToolToProcessService,
+        AddToolsToProcessService,
         RemoveToolFromProcessService,
         ListProcessToolsService,
         AddDocumentToProcessService,
+        AddDocumentsToProcessService,
         RemoveDocumentFromProcessService,
         ListProcessDocumentsService,
     ],
@@ -60,16 +68,20 @@ import { UpdateProcessService } from './services/update-process.service';
         CreateProcessService,
         FindAllProcessService,
         FindOneProcessService,
+        FindProcessChildrenService,
         FindProcessesByDepartmentService,
         UpdateProcessService,
         RemoveProcessService,
         AddPersonToProcessService,
+        AddPeopleToProcessService,
         RemovePersonFromProcessService,
         ListProcessPeopleService,
         AddToolToProcessService,
+        AddToolsToProcessService,
         RemoveToolFromProcessService,
         ListProcessToolsService,
         AddDocumentToProcessService,
+        AddDocumentsToProcessService,
         RemoveDocumentFromProcessService,
         ListProcessDocumentsService,
     ],

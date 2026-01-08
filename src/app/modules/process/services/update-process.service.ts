@@ -67,7 +67,10 @@ export class UpdateProcessService {
             process.parentId = parentId === null ? undefined : parentId;
         }
 
-        return await this.processRepository.save(process);
+        await this.processRepository.save(process);
+
+        // Return updated process with childrenIds
+        return await this.findOneProcessService.run(id);
     }
 }
 

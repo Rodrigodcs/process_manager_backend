@@ -11,10 +11,16 @@ export class FindAllProcessService {
     ) { }
 
     async run(): Promise<Process[]> {
-        return await this.processRepository.find({
-            relations: ['department', 'parent'],
+        const processes = await this.processRepository.find({
+            relations: ['department', 'parent', 'children'],
             order: { createdAt: 'DESC' },
         });
+
+        // Map processes to include childrenIds array
+        return processes.map(process => ({
+            ...process,
+            childrenIds: process.children?.map(child => child.id) || [],
+        })) as any;
     }
 }
 

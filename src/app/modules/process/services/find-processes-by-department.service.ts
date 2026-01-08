@@ -37,16 +37,22 @@ export class FindProcessesByDepartmentService {
                 departmentId,
                 parentId: IsNull(),
             },
-            relations: ['department'],
+            relations: ['department', 'children'],
             order: { createdAt: 'DESC' },
             skip,
             take: limit,
         });
 
+        // Map processes to include childrenIds array
+        const processesWithChildrenIds = data.map(process => ({
+            ...process,
+            childrenIds: process.children?.map(child => child.id) || [],
+        }));
+
         const totalPages = Math.ceil(total / limit);
 
         return {
-            data,
+            data: processesWithChildrenIds as any,
             meta: {
                 page,
                 limit,

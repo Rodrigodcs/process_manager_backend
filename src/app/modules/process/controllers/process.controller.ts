@@ -24,15 +24,20 @@ import { Document } from '../../document/entities/document.entity';
 import { Person } from '../../person/entities/person.entity';
 import { Tool } from '../../tool/entities/tool.entity';
 import { CreateProcessDto } from '../dto/create-process.dto';
+import { LinkDocumentsDto, LinkPeopleDto, LinkToolsDto } from '../dto/link-resources.dto';
 import { PaginationDto } from '../dto/pagination.dto';
 import { UpdateProcessDto } from '../dto/update-process.dto';
 import { Process } from '../entities/process.entity';
 import { AddDocumentToProcessService } from '../services/add-document-to-process.service';
+import { AddDocumentsToProcessService } from '../services/add-documents-to-process.service';
+import { AddPeopleToProcessService } from '../services/add-people-to-process.service';
 import { AddPersonToProcessService } from '../services/add-person-to-process.service';
 import { AddToolToProcessService } from '../services/add-tool-to-process.service';
+import { AddToolsToProcessService } from '../services/add-tools-to-process.service';
 import { CreateProcessService } from '../services/create-process.service';
 import { FindAllProcessService } from '../services/find-all-process.service';
 import { FindOneProcessService } from '../services/find-one-process.service';
+import { FindProcessChildrenService } from '../services/find-process-children.service';
 import { FindProcessesByDepartmentService } from '../services/find-processes-by-department.service';
 import { ListProcessDocumentsService } from '../services/list-process-documents.service';
 import { ListProcessPeopleService } from '../services/list-process-people.service';
@@ -50,16 +55,20 @@ export class ProcessController {
         private readonly createProcessService: CreateProcessService,
         private readonly findAllProcessService: FindAllProcessService,
         private readonly findOneProcessService: FindOneProcessService,
+        private readonly findProcessChildrenService: FindProcessChildrenService,
         private readonly findProcessesByDepartmentService: FindProcessesByDepartmentService,
         private readonly updateProcessService: UpdateProcessService,
         private readonly removeProcessService: RemoveProcessService,
         private readonly addPersonToProcessService: AddPersonToProcessService,
+        private readonly addPeopleToProcessService: AddPeopleToProcessService,
         private readonly removePersonFromProcessService: RemovePersonFromProcessService,
         private readonly listProcessPeopleService: ListProcessPeopleService,
         private readonly addToolToProcessService: AddToolToProcessService,
+        private readonly addToolsToProcessService: AddToolsToProcessService,
         private readonly removeToolFromProcessService: RemoveToolFromProcessService,
         private readonly listProcessToolsService: ListProcessToolsService,
         private readonly addDocumentToProcessService: AddDocumentToProcessService,
+        private readonly addDocumentsToProcessService: AddDocumentsToProcessService,
         private readonly removeDocumentFromProcessService: RemoveDocumentFromProcessService,
         private readonly listProcessDocumentsService: ListProcessDocumentsService,
     ) { }
@@ -106,6 +115,18 @@ export class ProcessController {
         );
     }
 
+    @Get(':id/children')
+    @ApiOperation({ summary: 'Find direct children of a process' })
+    @ApiParam({ name: 'id', description: 'Parent Process ID (UUID)' })
+    @ApiOkResponse({
+        description: 'List of direct children processes',
+        type: [Process],
+    })
+    @ApiNotFoundResponse({ description: 'Process not found' })
+    async findChildren(@Param('id') id: string) {
+        return await this.findProcessChildrenService.run(id);
+    }
+
     @Get(':id')
     @ApiOperation({ summary: 'Find a process by ID' })
     @ApiParam({ name: 'id', description: 'Process ID (UUID)' })
@@ -141,6 +162,28 @@ export class ProcessController {
     @ApiNotFoundResponse({ description: 'Process not found' })
     async remove(@Param('id') id: string) {
         await this.removeProcessService.run(id);
+    }
+
+    @Post(':processId/people/bulk')
+    @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Link multiple people to a process' })
+    @ApiParam({ name: 'processId', description: 'Process ID (UUID)' })
+    @ApiCreatedResponse({
+        description: 'People linked to process successfully',
+        schema: {
+            type: 'object',
+            properties: {
+                linked: { type: 'number', example: 3 },
+                skipped: { type: 'number', example: 1 }
+            }
+        }
+    })
+    @ApiNotFoundResponse({ description: 'Process or one or more people not found' })
+    async addPeopleToProcess(
+        @Param('processId') processId: string,
+        @Body() linkPeopleDto: LinkPeopleDto,
+    ) {
+        return await this.addPeopleToProcessService.run(processId, linkPeopleDto.personIds);
     }
 
     @Post(':processId/people/:personId')
@@ -183,6 +226,28 @@ export class ProcessController {
         return await this.listProcessPeopleService.run(processId);
     }
 
+    @Post(':processId/tools/bulk')
+    @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Link multiple tools to a process' })
+    @ApiParam({ name: 'processId', description: 'Process ID (UUID)' })
+    @ApiCreatedResponse({
+        description: 'Tools linked to process successfully',
+        schema: {
+            type: 'object',
+            properties: {
+                linked: { type: 'number', example: 3 },
+                skipped: { type: 'number', example: 1 }
+            }
+        }
+    })
+    @ApiNotFoundResponse({ description: 'Process or one or more tools not found' })
+    async addToolsToProcess(
+        @Param('processId') processId: string,
+        @Body() linkToolsDto: LinkToolsDto,
+    ) {
+        return await this.addToolsToProcessService.run(processId, linkToolsDto.toolIds);
+    }
+
     @Post(':processId/tools/:toolId')
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Link a tool to a process' })
@@ -221,6 +286,28 @@ export class ProcessController {
     @ApiNotFoundResponse({ description: 'Process not found' })
     async listProcessTools(@Param('processId') processId: string) {
         return await this.listProcessToolsService.run(processId);
+    }
+
+    @Post(':processId/documents/bulk')
+    @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Link multiple documents to a process' })
+    @ApiParam({ name: 'processId', description: 'Process ID (UUID)' })
+    @ApiCreatedResponse({
+        description: 'Documents linked to process successfully',
+        schema: {
+            type: 'object',
+            properties: {
+                linked: { type: 'number', example: 3 },
+                skipped: { type: 'number', example: 1 }
+            }
+        }
+    })
+    @ApiNotFoundResponse({ description: 'Process or one or more documents not found' })
+    async addDocumentsToProcess(
+        @Param('processId') processId: string,
+        @Body() linkDocumentsDto: LinkDocumentsDto,
+    ) {
+        return await this.addDocumentsToProcessService.run(processId, linkDocumentsDto.documentIds);
     }
 
     @Post(':processId/documents/:documentId')
