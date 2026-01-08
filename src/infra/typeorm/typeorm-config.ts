@@ -3,6 +3,7 @@ import { Department } from 'src/app/modules/department/entities/department.entit
 import { ProcessDocument } from 'src/app/modules/process/entities/process-document';
 import { ProcessPerson } from 'src/app/modules/process/entities/process-person';
 import { ProcessTool } from 'src/app/modules/process/entities/process-tool';
+import { User } from 'src/app/modules/user/entities/user.entity';
 import { Document } from '../../app/modules/document/entities/document.entity';
 import { Person } from '../../app/modules/person/entities/person.entity';
 import { Process } from '../../app/modules/process/entities/process.entity';
@@ -18,7 +19,7 @@ export const getTypeormConfig = (): TypeOrmModuleOptions => {
         username: ormEnvConfig.USERNAME,
         password: ormEnvConfig.PASSWORD,
         database: ormEnvConfig.DATABASE,
-        entities: [Department, Process, Tool, Person, Document, ProcessDocument, ProcessPerson, ProcessTool],
+        entities: [Department, Process, Tool, Person, Document, ProcessDocument, ProcessPerson, ProcessTool, User],
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         migrationsRun: false,
         synchronize: false,

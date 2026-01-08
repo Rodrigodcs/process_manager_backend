@@ -45,7 +45,9 @@ export class DepartmentController {
         description: 'Department created successfully',
         type: Department,
     })
-    async create(@Body() createDepartmentDto: CreateDepartmentDto) {
+    async create(
+        @Body() createDepartmentDto: CreateDepartmentDto,
+    ) {
         return await this.createDepartmentService.run(createDepartmentDto);
     }
 

@@ -1,12 +1,7 @@
-import {
-    MigrationInterface,
-    QueryRunner,
-    Table,
-    TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreateTables1767900000000 implements MigrationInterface {
-    name = 'CreateTables1767900000000'
+export class CreateTables1767883701925 implements MigrationInterface {
+    name = 'CreateTables1767883701925'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         // Create UUID extension
@@ -464,4 +459,3 @@ export class CreateTables1767900000000 implements MigrationInterface {
         await queryRunner.query(`DROP TYPE IF EXISTS "processes_type_enum"`);
     }
 }
-
