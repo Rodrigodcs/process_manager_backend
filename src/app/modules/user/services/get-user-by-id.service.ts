@@ -16,7 +16,7 @@ export class GetUserByIdService {
         });
 
         if (!user) {
-            throw new NotFoundException(`User with ID ${id} not found`);
+            throw new NotFoundException(`Usuário com ID ${id} não encontrado`);
         }
 
         const { password, ...userWithoutPassword } = user;

@@ -3,6 +3,7 @@ import { AuthMiddleware } from './app/middlewares/auth.middleware';
 import { AuthModule } from './app/modules/auth/auth.module';
 import { DepartmentModule } from './app/modules/department/department.module';
 import { DocumentModule } from './app/modules/document/document.module';
+import { HealthModule } from './app/modules/health/health.module';
 import { PersonModule } from './app/modules/person/person.module';
 import { ProcessModule } from './app/modules/process/process.module';
 import { ToolModule } from './app/modules/tool/tool.module';
@@ -19,6 +20,7 @@ import { TypeormModule } from './infra/typeorm/typeorm.module';
     DocumentModule,
     AuthModule,
     UserModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
@@ -28,8 +30,9 @@ export class AppModule {
     consumer.apply(
       AuthMiddleware,
     ).exclude(
+      'health',
       'auth/sign-up',
-      'auth/sign-in'
+      'auth/sign-in',
     ).forRoutes('*');
   }
 }
