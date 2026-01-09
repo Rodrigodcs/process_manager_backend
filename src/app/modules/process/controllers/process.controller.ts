@@ -25,6 +25,8 @@ import { Person } from '../../person/entities/person.entity';
 import { Tool } from '../../tool/entities/tool.entity';
 import { CreateProcessDto } from '../dto/create-process.dto';
 import { LinkDocumentsDto, LinkPeopleDto, LinkToolsDto } from '../dto/link-resources.dto';
+import { ListProcessesByDepartmentDto } from '../dto/list-processes-by-department.dto';
+import { ReorderProcessChildrenDto } from '../dto/reorder-process-children.dto';
 import { UpdateProcessDto } from '../dto/update-process.dto';
 import { Process } from '../entities/process.entity';
 import { CreateProcessService } from '../services/create-process.service';
@@ -42,8 +44,8 @@ import { AddToolsToProcessService } from '../services/process-tools/add-tools-to
 import { ListProcessToolsService } from '../services/process-tools/list-process-tools.service';
 import { RemoveToolFromProcessService } from '../services/process-tools/remove-tool-from-process.service';
 import { RemoveProcessService } from '../services/remove-process.service';
+import { ReorderProcessChildrenService } from '../services/reorder-process-children.service';
 import { UpdateProcessService } from '../services/update-process.service';
-import { ListProcessesByDepartmentDto } from '../dto/list-processes-by-department.dto';
 
 @ApiTags('processes')
 @Controller('processes')
@@ -65,6 +67,7 @@ export class ProcessController {
         private readonly addDocumentsToProcessService: AddDocumentsToProcessService,
         private readonly removeDocumentFromProcessService: RemoveDocumentFromProcessService,
         private readonly listProcessDocumentsService: ListProcessDocumentsService,
+        private readonly reorderProcessChildrenService: ReorderProcessChildrenService,
     ) { }
 
     @Post()
@@ -300,6 +303,23 @@ export class ProcessController {
     @ApiNotFoundResponse({ description: 'Process not found' })
     async listProcessDocuments(@Param('processId') processId: string) {
         return await this.listProcessDocumentsService.run(processId);
+    }
+
+
+    @Patch(':parentId/children/reorder')
+    @ApiOperation({ summary: 'Reorder children of a process' })
+    @ApiParam({ name: 'parentId', description: 'Parent Process ID (UUID)' })
+    @ApiOkResponse({
+        description: 'Children reordered successfully',
+        type: [Process],
+    })
+    @ApiNotFoundResponse({ description: 'Parent process not found' })
+    async reorderChildren(
+        @Param('parentId') parentId: string,
+        @Body() reorderProcessChildrenDto: ReorderProcessChildrenDto,
+    ) {
+        await this.reorderProcessChildrenService.run(parentId, reorderProcessChildrenDto.processIds);
+        return await this.findProcessChildrenService.run(parentId);
     }
 }
 

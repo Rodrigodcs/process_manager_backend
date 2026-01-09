@@ -22,7 +22,7 @@ export class FindProcessChildrenService {
         const children = await this.processRepository.find({
             where: { parentId },
             relations: ['children'],
-            order: { name: 'ASC' },
+            order: { order: 'ASC' },
         });
 
         return children.map(child => ({

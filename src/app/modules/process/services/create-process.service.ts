@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Department } from '../../department/entities/department.entity';
 import { CreateProcessDto } from '../dto/create-process.dto';
 import { Process } from '../entities/process.entity';
@@ -37,7 +37,37 @@ export class CreateProcessService {
             }
         }
 
-        const process = this.processRepository.create(createProcessDto);
+        let order = 0;
+
+        if (createProcessDto.parentId) {
+            const siblings = await this.processRepository.find({
+                where: { parentId: createProcessDto.parentId },
+                order: { order: 'DESC' },
+                take: 1,
+            });
+
+            if (siblings.length > 0) {
+                order = siblings[0].order + 1;
+            }
+        } else {
+            const siblings = await this.processRepository.find({
+                where: {
+                    departmentId: createProcessDto.departmentId,
+                    parentId: IsNull(),
+                },
+                order: { order: 'DESC' },
+                take: 1,
+            });
+
+            if (siblings.length > 0) {
+                order = siblings[0].order + 1;
+            }
+        }
+
+        const process = this.processRepository.create({
+            ...createProcessDto,
+            order,
+        });
         const savedProcess = await this.processRepository.save(process);
 
         return {

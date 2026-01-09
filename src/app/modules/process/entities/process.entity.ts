@@ -41,6 +41,9 @@ export class Process {
   @Column({ type: 'enum', enum: ProcessStatus })
   status: ProcessStatus;
 
+  @Column({ type: 'integer', default: 0 })
+  order: number;
+
   @Column({ name: 'department_id', type: 'uuid' })
   departmentId: string;
 

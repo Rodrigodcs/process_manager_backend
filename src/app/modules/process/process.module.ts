@@ -25,6 +25,7 @@ import { ListProcessToolsService } from './services/process-tools/list-process-t
 import { RemoveToolFromProcessService } from './services/process-tools/remove-tool-from-process.service';
 import { RemoveProcessService } from './services/remove-process.service';
 import { UpdateProcessService } from './services/update-process.service';
+import { ReorderProcessChildrenService } from './services/reorder-process-children.service';
 
 @Module({
     imports: [
@@ -57,6 +58,7 @@ import { UpdateProcessService } from './services/update-process.service';
         AddDocumentsToProcessService,
         RemoveDocumentFromProcessService,
         ListProcessDocumentsService,
+        ReorderProcessChildrenService,
     ],
     exports: [],
 })
