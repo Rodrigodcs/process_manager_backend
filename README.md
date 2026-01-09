@@ -2,13 +2,26 @@
 
 Backend da aplicação Process Manager - Sistema de gestão de processos desenvolvido com NestJS, TypeORM e PostgreSQL.
 
+## 🔧 Instalação com Docker
+
+## 📋 Pré-requisitos
+
+- Ter Docker instalado
+- Liberar as portas 5432 e 8080
+
+1. **Criar containers**
+
+```bash
+docker-compose up --build
+```
+
+## 🔧 Instalação para desenvolvimento
+
 ## 📋 Pré-requisitos
 
 - Node.js 18+ instalado
 - PostgreSQL 12+ instalado e rodando
 - npm ou yarn
-
-## 🔧 Instalação
 
 1. **Instalar dependências**
 

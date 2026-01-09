@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AuthMiddleware } from './app/middlewares/auth.middleware';
 import { AuthModule } from './app/modules/auth/auth.module';
+import { DashboardModule } from './app/modules/dashboard/dashboard.module';
 import { DepartmentModule } from './app/modules/department/department.module';
 import { DocumentModule } from './app/modules/document/document.module';
 import { HealthModule } from './app/modules/health/health.module';
@@ -21,6 +22,7 @@ import { TypeormModule } from './infra/typeorm/typeorm.module';
     AuthModule,
     UserModule,
     HealthModule,
+    DashboardModule,
   ],
   controllers: [],
   providers: [],
