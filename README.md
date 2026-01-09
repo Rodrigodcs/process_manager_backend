@@ -2,26 +2,30 @@
 
 Backend da aplicação Process Manager - Sistema de gestão de processos desenvolvido com NestJS, TypeORM e PostgreSQL.
 
+<br/>
+
 ## 🔧 Instalação com Docker
 
-## 📋 Pré-requisitos
+### 📋 Pré-requisitos
 
 - Ter Docker instalado
 - Liberar as portas 5432 e 8080
 
-## ▶️ Executar o Servidor
+### ▶️ Executar o Servidor
 
 ```bash
 docker-compose up --build
 ```
 
 O servidor estará disponível em: `http://localhost:8080`
+
 A documentação estará disponível em: `http://localhost:8080/api/docs`
 
+<br/>
 
 ## 🔧 Instalação para desenvolvimento
 
-## 📋 Pré-requisitos
+### 📋 Pré-requisitos
 
 - Node.js 18+ instalado
 - PostgreSQL 12+ instalado e rodando
@@ -41,7 +45,7 @@ Crie um arquivo `.env` na raiz do projeto backend com as mesmas variáveis do .e
 
 Crie o banco de dados no PostgreSQL ou suba um container com as expecificações do `.env`:
 
-## 🗃️ Migrations
+### 🗃️ Migrations
 
 Execute as migrations para criar as tabelas no banco de dados:
 
@@ -49,7 +53,7 @@ Execute as migrations para criar as tabelas no banco de dados:
 npm run migration:run
 ```
 
-## 🌱 Seeds (Opcional)
+### 🌱 Seeds (Opcional)
 
 Para popular o banco com dados iniciais (5 departamentos, 3 documentos, 11 ferramentas e 20 pessoas):
 
@@ -57,11 +61,12 @@ Para popular o banco com dados iniciais (5 departamentos, 3 documentos, 11 ferra
 npm run seed
 ```
 
-## ▶️ Executar o Servidor
+### ▶️ Executar o Servidor
 
 ```bash
 npm run start:dev
 ```
 
 O servidor estará disponível em: `http://localhost:8080`
+
 A documentação estará disponível em: `http://localhost:8080/api/docs`

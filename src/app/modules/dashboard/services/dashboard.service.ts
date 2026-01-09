@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, IsNull, Repository, MoreThanOrEqual } from 'typeorm';
+import { IsNull, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { Department } from '../../department/entities/department.entity';
 import { Document } from '../../document/entities/document.entity';
 import { Person } from '../../person/entities/person.entity';
