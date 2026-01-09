@@ -21,21 +21,7 @@ export class HealthController {
         type: String,
     })
     async health() {
-        const envVars = {
-            PORT: process.env.PORT,
-            NODE_ENV: process.env.NODE_ENV,
-            TYPEORM_CONNECTION: process.env.TYPEORM_CONNECTION,
-            TYPEORM_HOST: process.env.TYPEORM_HOST,
-            TYPEORM_USERNAME: process.env.TYPEORM_USERNAME,
-            TYPEORM_PASSWORD: process.env.TYPEORM_PASSWORD,
-            TYPEORM_DATABASE: process.env.TYPEORM_DATABASE,
-            TYPEORM_PORT: process.env.TYPEORM_PORT,
-            JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
-            JWT_EXPIRE: process.env.JWT_EXPIRE,
-            HASH_SALT: process.env.HASH_SALT,
-        };
-        console.log(envVars);
-        return envVars;
+        return "OK";
     }
 }
 

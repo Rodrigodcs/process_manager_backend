@@ -17,7 +17,6 @@ export class AddPeopleToProcessService {
     ) { }
 
     async run(processId: string, personIds: string[]): Promise<{ linked: number; skipped: number }> {
-        // Validate process exists
         const process = await this.processRepository.findOne({
             where: { id: processId },
         });
@@ -26,22 +25,18 @@ export class AddPeopleToProcessService {
             throw new NotFoundException(`Process with ID ${processId} not found`);
         }
 
-        // Validate all people exist
         const people = await this.personRepository.findByIds(personIds);
         if (people.length !== personIds.length) {
             throw new NotFoundException('One or more people not found');
         }
 
-        // Get existing links
         const existingLinks = await this.processPersonRepository.find({
             where: { processId },
         });
         const existingPersonIds = new Set(existingLinks.map(link => link.personId));
 
-        // Filter out already linked people
         const newPersonIds = personIds.filter(id => !existingPersonIds.has(id));
 
-        // Create new links
         const newLinks = newPersonIds.map(personId =>
             this.processPersonRepository.create({ processId, personId })
         );

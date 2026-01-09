@@ -17,7 +17,6 @@ export class AddDocumentsToProcessService {
     ) { }
 
     async run(processId: string, documentIds: string[]): Promise<{ linked: number; skipped: number }> {
-        // Validate process exists
         const process = await this.processRepository.findOne({
             where: { id: processId },
         });
@@ -26,22 +25,18 @@ export class AddDocumentsToProcessService {
             throw new NotFoundException(`Process with ID ${processId} not found`);
         }
 
-        // Validate all documents exist
         const documents = await this.documentRepository.findByIds(documentIds);
         if (documents.length !== documentIds.length) {
             throw new NotFoundException('One or more documents not found');
         }
 
-        // Get existing links
         const existingLinks = await this.processDocumentRepository.find({
             where: { processId },
         });
         const existingDocumentIds = new Set(existingLinks.map(link => link.documentId));
 
-        // Filter out already linked documents
         const newDocumentIds = documentIds.filter(id => !existingDocumentIds.has(id));
 
-        // Create new links
         const newLinks = newDocumentIds.map(documentId =>
             this.processDocumentRepository.create({ processId, documentId })
         );

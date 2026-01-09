@@ -69,7 +69,6 @@ export class UpdateProcessService {
 
         await this.processRepository.save(process);
 
-        // Return updated process with childrenIds
         return await this.findOneProcessService.run(id);
     }
 }

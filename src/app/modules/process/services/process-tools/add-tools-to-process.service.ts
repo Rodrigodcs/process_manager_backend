@@ -17,7 +17,6 @@ export class AddToolsToProcessService {
     ) { }
 
     async run(processId: string, toolIds: string[]): Promise<{ linked: number; skipped: number }> {
-        // Validate process exists
         const process = await this.processRepository.findOne({
             where: { id: processId },
         });
@@ -26,22 +25,18 @@ export class AddToolsToProcessService {
             throw new NotFoundException(`Process with ID ${processId} not found`);
         }
 
-        // Validate all tools exist
         const tools = await this.toolRepository.findByIds(toolIds);
         if (tools.length !== toolIds.length) {
             throw new NotFoundException('One or more tools not found');
         }
 
-        // Get existing links
         const existingLinks = await this.processToolRepository.find({
             where: { processId },
         });
         const existingToolIds = new Set(existingLinks.map(link => link.toolId));
 
-        // Filter out already linked tools
         const newToolIds = toolIds.filter(id => !existingToolIds.has(id));
 
-        // Create new links
         const newLinks = newToolIds.map(toolId =>
             this.processToolRepository.create({ processId, toolId })
         );

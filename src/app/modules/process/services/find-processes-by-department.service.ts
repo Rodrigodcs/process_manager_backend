@@ -43,7 +43,6 @@ export class FindProcessesByDepartmentService {
             take: limit,
         });
 
-        // Map processes to include childrenIds array
         const processesWithChildrenIds = data.map(process => ({
             ...process,
             childrenIds: process.children?.map(child => child.id) || [],

@@ -60,7 +60,6 @@ export class DashboardService {
     ) { }
 
     async getStats(): Promise<DashboardStats> {
-        // Overview - Totais
         const [
             totalUsers,
             totalDepartments,
@@ -79,7 +78,6 @@ export class DashboardService {
             this.documentRepository.count(),
         ]);
 
-        // Processos por departamento
         const processesByDepartmentRaw = await this.processRepository
             .createQueryBuilder('process')
             .leftJoin('process.department', 'department')
@@ -99,12 +97,10 @@ export class DashboardService {
             processCount: parseInt(item.processCount, 10),
         }));
 
-        // Top 5 departamentos com mais processos
         const topDepartments = [...processesByDepartment]
             .sort((a, b) => b.processCount - a.processCount)
             .slice(0, 5);
 
-        // Atividade recente
         const now = new Date();
         const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
@@ -131,7 +127,6 @@ export class DashboardService {
             }),
         ]);
 
-        // Hierarquia de processos
         const mainProcesses = totalProcesses - totalSubprocesses;
         const averageSubprocessesPerProcess =
             mainProcesses > 0 ? totalSubprocesses / mainProcesses : 0;

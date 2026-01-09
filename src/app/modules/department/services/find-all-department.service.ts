@@ -16,7 +16,7 @@ export class FindAllDepartmentService {
             .leftJoinAndSelect(
                 'department.processes',
                 'process',
-                'process.parentId IS NULL', // Only main processes
+                'process.parentId IS NULL',
             )
             .select([
                 'department.id',

@@ -16,7 +16,6 @@ export class FindAllProcessService {
             order: { createdAt: 'DESC' },
         });
 
-        // Map processes to include childrenIds array
         return processes.map(process => ({
             ...process,
             childrenIds: process.children?.map(child => child.id) || [],

@@ -4,12 +4,10 @@ export class CreateTables1767883701925 implements MigrationInterface {
     name = 'CreateTables1767883701925'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        // Create UUID extension
         await queryRunner.query(`
             CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
         `);
 
-        // Create ENUM types
         await queryRunner.query(`
             CREATE TYPE "processes_type_enum" AS ENUM ('MANUAL', 'SYSTEMIC');
         `);
@@ -18,7 +16,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             CREATE TYPE "processes_status_enum" AS ENUM ('ACTIVE', 'IN_REVIEW', 'DEPRECATED');
         `);
 
-        // Create departments table
         await queryRunner.createTable(
             new Table({
                 name: 'departments',
@@ -73,7 +70,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Create processes table
         await queryRunner.createTable(
             new Table({
                 name: 'processes',
@@ -127,7 +123,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Create tools table
         await queryRunner.createTable(
             new Table({
                 name: 'tools',
@@ -176,7 +171,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Create people table
         await queryRunner.createTable(
             new Table({
                 name: 'people',
@@ -220,7 +214,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Create documents table
         await queryRunner.createTable(
             new Table({
                 name: 'documents',
@@ -263,7 +256,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Create process_documents junction table
         await queryRunner.createTable(
             new Table({
                 name: 'process_documents',
@@ -283,7 +275,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Create process_people junction table
         await queryRunner.createTable(
             new Table({
                 name: 'process_people',
@@ -303,7 +294,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Create process_tools junction table
         await queryRunner.createTable(
             new Table({
                 name: 'process_tools',
@@ -323,7 +313,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             true,
         );
 
-        // Add foreign keys for processes table
         await queryRunner.createForeignKey(
             'processes',
             new TableForeignKey({
@@ -344,7 +333,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             }),
         );
 
-        // Add foreign keys for process_documents
         await queryRunner.createForeignKey(
             'process_documents',
             new TableForeignKey({
@@ -365,7 +353,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             }),
         );
 
-        // Add foreign keys for process_people
         await queryRunner.createForeignKey(
             'process_people',
             new TableForeignKey({
@@ -386,7 +373,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
             }),
         );
 
-        // Add foreign keys for process_tools
         await queryRunner.createForeignKey(
             'process_tools',
             new TableForeignKey({
@@ -409,7 +395,6 @@ export class CreateTables1767883701925 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        // Drop foreign keys
         const processDocumentsTable = await queryRunner.getTable('process_documents');
         if (processDocumentsTable) {
             const foreignKeys = processDocumentsTable.foreignKeys;
@@ -442,19 +427,16 @@ export class CreateTables1767883701925 implements MigrationInterface {
             }
         }
 
-        // Drop junction tables
         await queryRunner.dropTable('process_tools', true);
         await queryRunner.dropTable('process_people', true);
         await queryRunner.dropTable('process_documents', true);
 
-        // Drop main tables
         await queryRunner.dropTable('documents', true);
         await queryRunner.dropTable('people', true);
         await queryRunner.dropTable('tools', true);
         await queryRunner.dropTable('processes', true);
         await queryRunner.dropTable('departments', true);
 
-        // Drop ENUM types
         await queryRunner.query(`DROP TYPE IF EXISTS "processes_status_enum"`);
         await queryRunner.query(`DROP TYPE IF EXISTS "processes_type_enum"`);
     }

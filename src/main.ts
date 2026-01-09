@@ -7,7 +7,6 @@ import { ApiConfig } from './environment';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for frontend
   app.enableCors({
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -40,7 +39,7 @@ async function bootstrap() {
 
   const port = ApiConfig.PORT;
   await app.listen(port);
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
   console.log(`Swagger documentation available at http://localhost:${port}/api/docs`);
 }
 bootstrap();

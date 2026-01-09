@@ -30,7 +30,6 @@ export class FindOneProcessService {
             throw new NotFoundException(`Process with ID ${id} not found`);
         }
 
-        // Add childrenIds array
         return {
             ...process,
             childrenIds: process.children?.map(child => child.id) || [],
