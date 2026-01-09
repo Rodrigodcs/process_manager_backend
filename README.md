@@ -9,11 +9,15 @@ Backend da aplicação Process Manager - Sistema de gestão de processos desenvo
 - Ter Docker instalado
 - Liberar as portas 5432 e 8080
 
-1. **Criar containers**
+## ▶️ Executar o Servidor
 
 ```bash
 docker-compose up --build
 ```
+
+O servidor estará disponível em: `http://localhost:8080`
+A documentação estará disponível em: `http://localhost:8080/api/docs`
+
 
 ## 🔧 Instalação para desenvolvimento
 
@@ -31,24 +35,11 @@ npm install
 
 2. **Configurar variáveis de ambiente**
 
-Crie um arquivo `.env` na raiz do projeto backend com as seguintes variáveis:
-
-```env
-CONNECTION=postgres
-HOST=localhost
-PORT=5432
-USERNAME=seu_usuario
-PASSWORD=sua_senha
-DATABASE=nome_do_banco
-```
+Crie um arquivo `.env` na raiz do projeto backend com as mesmas variáveis do .env.example:
 
 3. **Criar o banco de dados**
 
-Crie o banco de dados no PostgreSQL com o nome especificado no `.env`:
-
-```sql
-CREATE DATABASE nome_do_banco;
-```
+Crie o banco de dados no PostgreSQL ou suba um container com as expecificações do `.env`:
 
 ## 🗃️ Migrations
 
@@ -68,21 +59,9 @@ npm run seed
 
 ## ▶️ Executar o Servidor
 
-### Modo desenvolvimento (com hot-reload)
-
 ```bash
 npm run start:dev
 ```
 
-### Modo produção
-
-
-O servidor estará disponível em: `http://localhost:3000`
-
-## 📚 Documentação da API
-
-Após iniciar o servidor, acesse a documentação Swagger em:
-
-```
-http://localhost:3000/api/docs
-```
+O servidor estará disponível em: `http://localhost:8080`
+A documentação estará disponível em: `http://localhost:8080/api/docs`
